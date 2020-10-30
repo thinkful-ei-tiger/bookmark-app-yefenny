@@ -52,10 +52,7 @@ const generateListItem = function (items) {
                           site.desc
                         }
                         </p>
-                        <div class="expanded-buttons flex-row"> <input type="button" class="buttons update" value="Close">
                          <input type="submit" class="buttons update" value="Update">
-                        </div>
-                        
                     </div>
                     </li> `;
   });
