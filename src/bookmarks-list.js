@@ -32,8 +32,10 @@ const generateListItem = function (items) {
     }">
                     <div class="list-head flex-row">
                         <span class="item-title"> ${site.title} </span> 
-                        <span class="stars icon"> ${starts} </span>
-                      <span class="trash hidden">
+                        <span class="stars icon ${
+                          !site.expanded ? '' : 'hidden'
+                        }"> ${starts} </span>
+                      <span class="trash ${site.expanded ? '' : 'hidden'}">
                         <img src="${deleteIcon}" alt="delete">
                     </span>
                     </div>
