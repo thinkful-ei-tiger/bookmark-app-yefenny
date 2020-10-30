@@ -7,8 +7,9 @@ body{
     color: #161616;
 }
 
+
 h1 {
-    text-align: left;
+    text-align: center;
     font-weight: 500;
     font-size: 37.7px;
     margin: 10px 0 0px 0;
@@ -35,6 +36,7 @@ h1 {
     justify-content: center;
     margin: 10px auto;
     padding: 10px;
+    max-width: 600px;
 }
 
 /* buttons format */
@@ -110,6 +112,11 @@ h1 {
 
 
 /* description on bookmarks list */
+
+.delete-button{
+    background:none;
+    border: none;
+}
 .top-description{
     padding: 10px 20px;
     justify-content: space-between;
@@ -213,6 +220,8 @@ form select{
     font-size: 18px;
 
 }
+
+
 
 
 

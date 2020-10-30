@@ -104,7 +104,7 @@ const generateListItem = function (items) {
                           !site.expanded ? '' : 'hidden'
                         }"> ${starts} </span>
                       <span class="trash ${site.expanded ? '' : 'hidden'}">
-                        <img src="${deleteIcon}" alt="delete">
+                        <button type="button" name="delete-item" class='js-delete delete-button'><img src="${deleteIcon}" alt="delete"> </button>
                     </span>
                     </div>
                     <div class="js-expand item-preview flex-column  ${
@@ -220,6 +220,23 @@ const handleUpdateBookmark = function (id, params) {
     });
 };
 
+// Handle on deleteButton
+const handleDeleteItem = function () {
+  $('.container').on('click', '.js-delete', function (evt) {
+    let id = $(this).closest('.js-list-item').data('item-id');
+    api
+      .deleteBookmark(id)
+      .then(() => {
+        store.deleteBookmark(id);
+        render();
+      })
+      .catch((error) => {
+        store.setError(error.message);
+        renderError();
+      });
+  });
+};
+
 // Handle on click cancel error "x"
 
 const handleCancelError = function () {
@@ -289,6 +306,7 @@ const eventsListener = function () {
   handleFormSubmit();
   handleCancelError();
   handleClickNew();
+  handleDeleteItem();
 };
 
 export default {
