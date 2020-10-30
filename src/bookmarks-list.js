@@ -27,7 +27,9 @@ const generateListItem = function (items) {
       starts = getStarts(site.rating);
     }
 
-    listString += ` <li class='js-list-item list-item flex-column' tabindex="0" data-item-id="${site.id}">
+    listString += ` <li class='js-list-item list-item flex-column' tabindex="0" data-item-id="${
+      site.id
+    }">
                     <div class="list-head flex-row">
                         <span class="item-title"> ${site.title} </span> 
                         <span class="stars icon"> ${starts} </span>
@@ -35,16 +37,27 @@ const generateListItem = function (items) {
                         <img src="${deleteIcon}" alt="delete">
                     </span>
                     </div>
-                    <div class="js-expand item-preview flex-column  hidden">
+                    <div class="js-expand item-preview flex-column  ${
+                      site.expanded ? '' : 'hidden'
+                    }">
                         <span class="flex-row top-description">
-                            <button class="buttons visit-button"><a href="${site.url}" alt="link-to bookmark" target= "black">Visit page</a></button>
-                            <span class= "star flex-column" > <input type="number" value="${site.rating}" class="rating" max="5" min="1" required> </span>
+                            <button class="buttons visit-button"><a href="${
+                              site.url
+                            }" alt="link-to bookmark" target= "black">Visit page</a></button>
+                            <span class= "star flex-column" > <input type="number" value="${
+                              site.rating
+                            }" class="rating" max="5" min="1" required> </span>
                         </span>
-                        <p class="description" contenteditable="true">${site.desc}
+                        <p class="description" contenteditable="true">${
+                          site.desc
+                        }
                         </p>
-                        <input type="submit" class="buttons update" value="Update">
+                        <div class="expanded-buttons flex-row"> <input type="button" class="buttons update" value="Close">
+                         <input type="submit" class="buttons update" value="Update">
+                        </div>
+                        
                     </div>
-                    </li>`;
+                    </li> `;
   });
 
   return listString;
@@ -92,7 +105,7 @@ const filterByRating = function (items, rating) {
   return filteredItems;
 };
 
-// Handles click
+// Handle clicks
 
 const handleFilterClick = function () {
   $('.container').on('change', '#filter', function (evt) {
@@ -104,8 +117,27 @@ const handleFilterClick = function () {
   });
 };
 
+const handlekeyDownListItem = function () {
+  $('.container').on('keydown', '.js-list-item', function (evt) {
+    if (evt.which == 13) {
+      $(this).click();
+    }
+  });
+};
+
+const handleListItemClick = function () {
+  $('.container').on('click', '.js-list-item', function (evt) {
+    console.log('this other handle');
+    const id = $(this).data('item-id');
+    store.toggleExpanded(id);
+    render();
+  });
+};
+
 const eventsListener = function () {
   handleFilterClick();
+  handleListItemClick();
+  handlekeyDownListItem();
 };
 
 export default {
