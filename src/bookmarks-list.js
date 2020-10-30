@@ -46,15 +46,13 @@ const generateListItem = function (items) {
                             <button class="buttons visit-button"><a href="${
                               site.url
                             }" alt="link-to bookmark" target= "black">Visit page</a></button>
-                            <span class= "star flex-column" > <input type="number" value="${
+                            <span class= "star flex-column" > ${
                               site.rating
-                            }" class="rating" max="5" min="1" required> </span>
+                            } </span>
                         </span>
-                        <p class="description" contenteditable="true">${
-                          site.desc
-                        }
+                        <p class="description">${site.desc}
                         </p>
-                         <input type="submit" class="buttons update" value="Update">
+                         <input type="button" class="buttons edit" value="Edit">
                     </div>
                     </li> `;
   });

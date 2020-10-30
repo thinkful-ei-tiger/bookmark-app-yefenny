@@ -141,7 +141,7 @@ a {
 
 
 .description{
-    padding: 0 10px;
+    padding: 0 20px;
 }
 
 .rating{
@@ -154,9 +154,10 @@ a {
     padding-top: 3px;
 }
 
-.update{
+.edit{
     align-self: center;
-    height: fit-content;
+    height: 40px;
+    width: 30%;
     margin-bottom: 10px;
 }
 
