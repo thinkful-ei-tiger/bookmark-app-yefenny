@@ -1,0 +1,201 @@
+
+/* Body style */
+body{
+    background-color: #fefefe;
+    font-family: 'Fira Sans Extra Condensed', sans-serif;
+    font-size: 18px;
+    color: #161616;
+}
+
+h1 {
+    text-align: left;
+    font-weight: 500;
+    font-size: 37.7px;
+    margin: 10px 0 0px 0;
+}
+
+/* items that should align horizontal */
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+/* items to align vertically */
+.flex-column{
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* main container style */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+/* buttons format */
+
+.buttons-container{
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.buttons{
+
+    padding: 5px 5px;
+    height: 60px;
+    font-family: 'Fira Sans Extra Condensed', sans-serif;
+    font-size: 1.25rem;
+    color: #fefefe;
+    background: #161616;
+    border-bottom: none;
+    border: 3px solid #161616;
+
+}
+
+#filter{
+    -webkit-appearance: none;
+    color:#fefefe ;
+    background: #161616;
+    margin-left: 10px;
+   
+
+}
+
+/* list item format */
+
+.container ul {
+
+    padding: 0;
+}
+.container ul:last-child{
+   border-bottom: 1px solid #161616;
+}
+
+.container ul li{
+    list-style: none; 
+}
+
+/* style item head  */
+.item-title{
+    flex: 2;
+    width: fit-content;
+}
+
+.list-head {
+    justify-content: space-between;
+    border-radius: 1px;
+    border: 1px solid #161616;
+    border-bottom: none;
+    background-color: #f4f4f4;
+    margin: 0;
+    height: auto;
+    padding: 10px 0 5px 10px;
+    font-size: 1.25rem;
+
+}
+/* stars styling */
+
+.stars img {
+    width: 25px;
+    
+}
+
+.starts {
+    flex: 1;
+}
+
+
+/* description on bookmarks list */
+.top-description{
+    padding: 10px 20px;
+    justify-content: space-between;
+}
+
+.buttons.visit-button {
+    height: fit-content;
+}
+
+a {
+    text-decoration: none;
+    color: #f4f4f4;
+}
+
+.star{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    background: url("images/full-stroke.svg");
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    
+}
+
+.item-preview {
+    border: 1px solid #161616;;
+}
+
+
+.description{
+    padding: 0 10px;
+}
+
+.rating{
+    border: none;
+    background:none;
+    width: 28%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 3px;
+}
+
+.update{
+    align-self: center;
+    height: fit-content;
+    margin-bottom: 10px;
+}
+
+/* hide */
+
+.hidden {
+    display: none;
+}
+
+/* ----------------- Form style--------------------------------- */
+
+/* Tittle h2 */
+h2 {
+    margin: 10px 0 0 0;
+}
+/* Form buttons style */
+
+form input{
+    -webkit-appearance: none;
+    font-family: 'Fira Sans Extra Condensed', sans-serif;
+    border: 1px solid #161616;
+    font-size: 18px;
+    margin: 10px 0 0 0;
+}
+.form-buttons{
+    justify-content: space-between;
+    padding: 10px 20px 5px 20px;
+}
+
+.form-buttons .buttons{
+    height: fit-content;
+}
+
+form select{
+    width: fit-content;
+}
+
+.error{
+    color: #aa3a3a;
+}
+
+
