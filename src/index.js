@@ -8,12 +8,12 @@ import bookmarksList from './bookmarks-list';
 // Main function that renders the shopping list
 const main = function () {
   api.getBookmarksList().then((sites) => {
-    console.log(sites);
     sites.forEach((bookmark) => {
       store.addBookmark(bookmark);
       bookmarksList.render();
     });
   });
+  bookmarksList.eventsListener();
   bookmarksList.render();
 };
 

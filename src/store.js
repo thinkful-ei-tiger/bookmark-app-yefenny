@@ -11,7 +11,12 @@ const addBookmark = function (site) {
   this.store.bookmarks.push(site);
 };
 
+const changeFilter = function (filter) {
+  this.store.filter = filter;
+};
+
 export default {
   store,
-  addBookmark
+  addBookmark,
+  changeFilter
 };
