@@ -3,6 +3,74 @@ import store from './store';
 import fullStar from './images/new-black.svg';
 import emptyStar from './images/full-stroke.svg';
 import deleteIcon from './images/trash-can.svg';
+import api from './api';
+
+// serialize form data
+const serializeJson = function (form) {
+  const formData = new FormData(form);
+  const o = {};
+  formData.forEach((val, name) => (o[name] = val));
+  return JSON.stringify(o);
+};
+
+// insert error Message
+const renderError = function () {
+  if (store.store.error) {
+    let element = generateErrorElements(store.store.error);
+    $('.js-error-container').html(element);
+  }
+};
+// generate error elements
+
+const generateErrorElements = function (message) {
+  return `<input type="button" name="cancel-err" id="cancel-err" value="x" class="button cancel-error" /> <span class="error">${message}</span> `;
+};
+// generate selectOptionsForm
+const generateAddSelectOptions = function (rating) {
+  let options = '';
+  //   ${rating === i ? 'selected' : ''}
+  for (let i = 1; i <= 5; i++) {
+    options += `<option value="${i}" ${rating === i ? 'selected' : ''}>`;
+    for (let x = 0; x < i; x++) {
+      options += '★';
+    }
+    options += `</option>`;
+  }
+  return options;
+};
+
+//generate add form template that can be use for add or edit bookmark
+const generateAddForm = function (item) {
+  let options = generateAddSelectOptions(item ? item.rating : '');
+
+  let html = ` <h2>${item ? 'Edit bookmark' : 'Add new bookmark'}</h2>
+  <div class="js-error-container error-container flex-column "> </div>
+  <form class="js-form flex-column" data-item-id="${item ? item.id : ''}">
+      <input type="url" name="url" id="url" required placeholder="http:sample.com"/ value="${
+        item ? item.url : ''
+      }" required>
+      <div class="details flex-column">
+          <input type="text" class="title" placeholder="Insert bookmark name" name="title" value="${
+            item ? item.title : ''
+          }"  required>
+          <label for="rating">Rating</label>
+          
+          <select name="rating" id="rating">
+          ${options}
+          </select>
+          <textarea name="desc" id="description" cols="30" rows="10"> ${
+            item ? item.desc : ''
+          } </textarea>
+      
+      </div>
+      <div class=" form-buttons flex-row">
+  
+          <button type="button" class=" buttons" id="cancel"> Cancel</button>
+          <button type="submit" id="create" class="buttons">Save</button> 
+      </div>
+  </form>`;
+  return html;
+};
 
 // generate start image to add to the list item
 const getStarts = function (rating) {
@@ -52,7 +120,7 @@ const generateListItem = function (items) {
                         </span>
                         <p class="description">${site.desc}
                         </p>
-                         <input type="button" class="buttons edit" value="Edit">
+                         <input type="button" class="js-edit buttons edit" value="Edit">
                     </div>
                     </li> `;
   });
@@ -62,8 +130,9 @@ const generateListItem = function (items) {
 
 // generate elements to show on the bookmarks list view
 const generateListTemplate = function (items) {
-  let template = `<div class="buttons-container flex-row">
-        <button type="button" class="buttons" id='new-bookmark'> + New bookmark</button>
+  let template = `<div class="js-error-container error-container flex-row "> </div>
+  <div class="buttons-container flex-row">
+        <button type="button" class="js-new buttons" id='new-bookmark'> + New bookmark</button>
         <select name="filter" id="filter" class='buttons'>
             <option value="" selected disabled >Filter By</option>
             <option value="0">No filter</option>
@@ -86,13 +155,21 @@ const render = function () {
   const newStore = store.store;
   let items = newStore.bookmarks;
   let template = '';
-  if (newStore.filter === 0) {
+
+  if (newStore.edit) {
+    let item = newStore.bookmarks.find((item) => item.id === newStore.edit);
+    template += generateAddForm(item);
+  } else if (newStore.adding) {
+    template += generateAddForm();
+  } else if (newStore.filter === 0) {
+    // To display the bookmarks without filters
     template += generateListTemplate(items);
   } else if (newStore.filter !== 0) {
+    // to display bookmarks filtered by selected rating
     items = filterByRating(items, newStore.filter);
-    console.log(items);
     template += generateListTemplate(items);
   }
+
   $('.container').html(template);
 };
 
@@ -102,7 +179,64 @@ const filterByRating = function (items, rating) {
   return filteredItems;
 };
 
-// Handle clicks
+/**-------------------------- Handles -----------------------**/
+// check if It is submitting to update form or to new Bookmark form
+const handleFormSubmit = function () {
+  $('.container').on('submit', '.js-form', function (evt) {
+    evt.preventDefault();
+    let id = $(this).data('item-id');
+    let vals = serializeJson(this);
+    if (id) handleUpdateBookmark(id, vals);
+    else handleNewBookmark(vals);
+  });
+};
+
+const handleNewBookmark = function (params) {
+  api
+    .addBookmark(params)
+    .then(() => {
+      params = JSON.parse(params);
+      store.addBookmark(params);
+      store.toggleAdding();
+      render();
+    })
+    .catch((error) => {
+      store.setError(error.message);
+      renderError();
+    });
+};
+
+const handleUpdateBookmark = function (id, params) {
+  api
+    .updateBookmark(id, params)
+    .then(() => {
+      store.updateBookmark(id, params);
+      store.changeEdit('');
+      render();
+    })
+    .catch((error) => {
+      store.setError(error.message);
+      renderError();
+    });
+};
+
+// Handle on click cancel error "x"
+
+const handleCancelError = function () {
+  $('.container').on('click', '#cancel-err', function () {
+    store.setError(null);
+    render();
+  });
+};
+// Handle on click cancel button on add form and check if what clicked from Edit or addNew
+const handleCancelClick = function () {
+  $('.container').on('click', '#cancel', function (evt) {
+    let id = $(this).closest('.js-form').data('item-id');
+    if (id) store.changeEdit('');
+    else store.toggleAdding();
+    render();
+  });
+};
 
 const handleFilterClick = function () {
   $('.container').on('change', '#filter', function (evt) {
@@ -111,6 +245,13 @@ const handleFilterClick = function () {
       store.changeFilter(filter);
       render();
     }
+  });
+};
+
+const handleClickNew = function () {
+  $('.container').on('click', '.js-new', function (evt) {
+    store.toggleAdding();
+    render();
   });
 };
 
@@ -124,17 +265,30 @@ const handlekeyDownListItem = function () {
 
 const handleListItemClick = function () {
   $('.container').on('click', '.js-list-item', function (evt) {
-    console.log('this other handle');
     const id = $(this).data('item-id');
     store.toggleExpanded(id);
     render();
   });
 };
 
+const handleEditClick = function () {
+  $('.container').on('click', '.js-edit', function (evt) {
+    let id = $(this).closest('.js-list-item').data('item-id');
+    store.changeEdit(id);
+    render();
+  });
+};
+
+// Listen every function inside it
 const eventsListener = function () {
   handleFilterClick();
   handleListItemClick();
   handlekeyDownListItem();
+  handleEditClick();
+  handleCancelClick();
+  handleFormSubmit();
+  handleCancelError();
+  handleClickNew();
 };
 
 export default {

@@ -195,8 +195,25 @@ form select{
     width: fit-content;
 }
 
-.error{
-    color: #aa3a3a;
+.error-container{
+    flex-flow: column wrap;
 }
+
+.error{   
+    color: #aa3a3a;
+    width: 90%;
+    flex: 1;
+   
+}
+
+.cancel-error{
+    align-self: flex-start;
+    font-weight: bold;
+    background:none;
+    font-size: 18px;
+
+}
+
+
 
 

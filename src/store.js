@@ -2,10 +2,11 @@ let store = {
   bookmarks: [],
   adding: false,
   error: null,
-  filter: 0
+  filter: 0,
+  edit: ''
 };
 
-const siteById = function (id) {
+const findById = function (id) {
   return store.bookmarks.find((site) => site.id === id);
 };
 // add new bookmark item to store
@@ -19,13 +20,40 @@ const changeFilter = function (filter) {
 };
 
 const toggleExpanded = function (id) {
-  let found = siteById(id);
+  let found = findById(id);
   found.expanded = !found.expanded;
+};
+
+const toggleAdding = function () {
+  this.store.adding = !this.store.adding;
+};
+
+const changeEdit = function (id) {
+  this.store.edit = id;
+};
+
+const updateBookmark = function (id, params) {
+  let foundBookmark = findById(id);
+  params = JSON.parse(params);
+  params.expanded = false;
+  Object.assign(foundBookmark, params);
+};
+
+const deleteBookmark = function (id) {
+  this.store.bookmarks = this.store.bookmarks.filter((item) => item.id !== id);
+};
+
+const setError = function (message) {
+  this.store.error = message;
 };
 
 export default {
   store,
   addBookmark,
   changeFilter,
-  toggleExpanded
+  toggleExpanded,
+  toggleAdding,
+  changeEdit,
+  updateBookmark,
+  setError
 };

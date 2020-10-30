@@ -11,7 +11,7 @@ const filterFetch = function (...arg) {
 
         if (!res.headers.get('content-type').includes('json')) {
           error.message = res.statusText;
-          Promise.reject(error);
+          return Promise.reject(error);
         }
       }
       return res.json();
@@ -19,7 +19,7 @@ const filterFetch = function (...arg) {
     .then((data) => {
       if (error) {
         error.message = data.message;
-        Promise.reject(error);
+        return Promise.reject(error);
       }
 
       return data;
@@ -30,6 +30,33 @@ const getBookmarksList = function () {
   return filterFetch(BASE_URL);
 };
 
+const addBookmark = function (params) {
+  return filterFetch(`${BASE_URL}`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: params
+  });
+};
+
+const updateBookmark = function (id, params) {
+  return filterFetch(`${BASE_URL}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: params
+  });
+};
+
+const deleteBookmark = function (id) {
+  return filterFetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
+};
+
 export default {
-  getBookmarksList
+  getBookmarksList,
+  updateBookmark,
+  addBookmark,
+  deleteBookmark
 };
