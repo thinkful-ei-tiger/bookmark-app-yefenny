@@ -58,7 +58,7 @@ const generateAddForm = function (item) {
           <select name="rating" id="rating">
           ${options}
           </select>
-          <textarea name="desc" id="description" cols="30" rows="10"> ${
+          <textarea name="desc" id="description" cols="30" rows="10">${
             item ? item.desc : ''
           } </textarea>
       
@@ -99,7 +99,7 @@ const generateListItem = function (items) {
       site.id
     }">
                     <div class="list-head flex-row">
-                        <span class="item-title"> ${site.title} </span> 
+                        <span class="item-title"> ${site.title}</span> 
                         <span class="stars icon ${
                           !site.expanded ? '' : 'hidden'
                         }"> ${starts} </span>
@@ -194,9 +194,9 @@ const handleFormSubmit = function () {
 const handleNewBookmark = function (params) {
   api
     .addBookmark(params)
-    .then(() => {
-      params = JSON.parse(params);
-      store.addBookmark(params);
+    .then((item) => {
+      console.log(item);
+      store.addBookmark(item);
       store.toggleAdding();
       render();
     })
@@ -215,6 +215,7 @@ const handleUpdateBookmark = function (id, params) {
       render();
     })
     .catch((error) => {
+      console.log(error);
       store.setError(error.message);
       renderError();
     });
@@ -282,6 +283,7 @@ const handlekeyDownListItem = function () {
 
 const handleListItemClick = function () {
   $('.container').on('click', '.js-list-item', function (evt) {
+    evt.stopPropagation();
     const id = $(this).data('item-id');
     store.toggleExpanded(id);
     render();

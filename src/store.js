@@ -1,9 +1,13 @@
-let store = {
+const store = {
   bookmarks: [],
   adding: false,
   error: null,
   filter: 0,
   edit: ''
+};
+
+const setError = function (message) {
+  this.store.error = message;
 };
 
 const findById = function (id) {
@@ -12,9 +16,7 @@ const findById = function (id) {
 // add new bookmark item to store
 const addBookmark = function (site) {
   site.expanded = false;
-  console.log(site);
   this.store.bookmarks.push(site);
-  console.log(this.store.bookmarks);
 };
 
 const changeFilter = function (filter) {
@@ -23,8 +25,8 @@ const changeFilter = function (filter) {
 
 const toggleExpanded = function (id) {
   let found = findById(id);
-
   found.expanded = !found.expanded;
+  console.log(found);
 };
 
 const toggleAdding = function () {
@@ -44,10 +46,6 @@ const updateBookmark = function (id, params) {
 
 const deleteBookmark = function (id) {
   this.store.bookmarks = this.store.bookmarks.filter((item) => item.id !== id);
-};
-
-const setError = function (message) {
-  this.store.error = message;
 };
 
 export default {
