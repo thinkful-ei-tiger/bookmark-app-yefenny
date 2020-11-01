@@ -1,5 +1,5 @@
 <h1>This is my bookmark-app. </h1>
-<a href="https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/" alt="live app">Link to the app </a>
+<!-- <a href="https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/" alt="live app">Link to the app </a> -->
 <h2>User Stories</h2>
 As a user:
 
