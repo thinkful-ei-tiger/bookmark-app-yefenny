@@ -1,6 +1,6 @@
 #This is my bookmark-app.
 
-<!-- <a href="https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/" alt="live app">Link to the app </a> -->
+[Link to live app.]https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/
 
 #User Stories
 As a user:
