@@ -20,11 +20,13 @@ const renderError = function () {
     $('.js-error-container').html(element);
   }
 };
+
 // generate error elements
 
 const generateErrorElements = function (message) {
   return `<input type="button" name="cancel-err" id="cancel-err" value="x" class="button cancel-error" /> <span class="error">${message}</span> `;
 };
+
 // generate selectOptionsForm
 const generateAddSelectOptions = function (rating) {
   let options = '';
@@ -43,7 +45,10 @@ const generateAddSelectOptions = function (rating) {
 const generateAddForm = function (item) {
   let options = generateAddSelectOptions(item ? item.rating : '');
 
-  let html = ` <h2>${item ? 'Edit bookmark' : 'Add new bookmark'}</h2>
+  let html = ` <header class="flex-row">
+    <h1>Bookmarks app</h1>  
+  </header>
+  <h2>${item ? 'Edit bookmark' : 'Add new bookmark'}</h2>
   <div class="js-error-container error-container flex-column "> </div>
   <form class="js-form flex-column" data-item-id="${item ? item.id : ''}">
       <input type="url" name="url" id="url" required placeholder="http:sample.com"/ value="${
@@ -130,7 +135,10 @@ const generateListItem = function (items) {
 
 // generate elements to show on the bookmarks list view
 const generateListTemplate = function (items) {
-  let template = `<div class="js-error-container error-container flex-row "> </div>
+  let template = `<header class="flex-row">
+  <h1>Bookmarks app</h1>  
+</header>
+  <div class="js-error-container error-container flex-row "> </div>
   <div class="buttons-container flex-row">
         <button type="button" class="js-new buttons" id='new-bookmark'> + New bookmark</button>
         <select name="filter" id="filter" class='buttons'>
@@ -147,32 +155,55 @@ const generateListTemplate = function (items) {
         <ul class="flex-column"> 
       `;
   template += generateListItem(items);
+  template += ' </ul> </div> ';
+
   return template;
 };
 
-// render
-const render = function () {
+const displayForm = function () {
   const newStore = store.store;
-  let items = newStore.bookmarks;
   let template = '';
-
   if (newStore.edit) {
+    // Form for editing items
     let item = newStore.bookmarks.find((item) => item.id === newStore.edit);
-    template += generateAddForm(item);
+    template = generateAddForm(item);
   } else if (newStore.adding) {
-    template += generateAddForm();
-  } else if (newStore.filter === 0) {
-    // To display the bookmarks without filters
-    template += generateListTemplate(items);
-  } else if (newStore.filter !== 0) {
-    // to display bookmarks filtered by selected rating
-    items = filterByRating(items, newStore.filter);
-    template += generateListTemplate(items);
+    // Form empty to add new Bookmark
+    template = generateAddForm();
   }
-
-  $('.container').html(template);
+  if (template !== '') {
+    $('.container').html(template);
+  }
 };
 
+const displayList = function () {
+  const newStore = store.store;
+  // To display all bookmarks
+  if (newStore.filter === 0 && !newStore.edit && !newStore.adding) {
+    let template = generateListTemplate(items);
+    $('.container').html(template);
+  }
+};
+
+const displayFilteredList = function () {
+  const newStore = store.store;
+  if (newStore.filter !== 0 && !newStore.edit && !newStore.adding) {
+    // to display bookmarks filtered by selected rating
+    items = filterByRating(items, newStore.filter);
+    let template = generateListTemplate(items);
+    $('.container').html(template);
+  }
+};
+
+//--------------------------------------------------Render function-------------------------------------------------------
+
+const render = function () {
+  displayForm();
+  displayList();
+  displayFilteredList();
+};
+
+// -----------------------------------------------------------------------------------------------------------------------------
 // Filter bookmarks by rating
 const filterByRating = function (items, rating) {
   let filteredItems = items.filter((item) => item.rating >= rating);
