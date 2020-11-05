@@ -1,6 +1,6 @@
 # This is my bookmark-app.
 
-[Link to live app.] (https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/)
+[Link to live app.](https://thinkful-ei-tiger.github.io/bookmark-app-yefenny/)
 
 # User Stories
 
