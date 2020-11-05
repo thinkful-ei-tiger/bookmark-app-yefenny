@@ -26,7 +26,6 @@ const changeFilter = function (filter) {
 const toggleExpanded = function (id) {
   let found = this.findById(id);
   found.expanded = !found.expanded;
-  console.log(found);
 };
 
 const toggleAdding = function () {

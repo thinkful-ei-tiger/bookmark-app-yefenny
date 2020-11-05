@@ -51,7 +51,7 @@ const generateAddForm = function (item) {
   <h2>${item ? 'Edit bookmark' : 'Add new bookmark'}</h2>
   <div class="js-error-container error-container flex-column "> </div>
   <form class="js-form flex-column" data-item-id="${item ? item.id : ''}">
-      <input type="url" name="url" id="url" required placeholder="http:sample.com"/ value="${
+      <input type="url" name="url" id="url" required placeholder="http://sample.com"/ value="${
         item ? item.url : ''
       }" required>
       <div class="details flex-column">
@@ -180,6 +180,7 @@ const displayList = function () {
   const newStore = store.store;
   // To display all bookmarks
   if (newStore.filter === 0 && !newStore.edit && !newStore.adding) {
+    let items = newStore.bookmarks;
     let template = generateListTemplate(items);
     $('.container').html(template);
   }
@@ -189,6 +190,7 @@ const displayFilteredList = function () {
   const newStore = store.store;
   if (newStore.filter !== 0 && !newStore.edit && !newStore.adding) {
     // to display bookmarks filtered by selected rating
+    let items = newStore.bookmarks;
     items = filterByRating(items, newStore.filter);
     let template = generateListTemplate(items);
     $('.container').html(template);
@@ -226,7 +228,6 @@ const handleNewBookmark = function (params) {
   api
     .addBookmark(params)
     .then((item) => {
-      console.log(item);
       store.addBookmark(item);
       store.toggleAdding();
       render();
@@ -246,7 +247,6 @@ const handleUpdateBookmark = function (id, params) {
       render();
     })
     .catch((error) => {
-      console.log(error);
       store.setError(error.message);
       renderError();
     });
